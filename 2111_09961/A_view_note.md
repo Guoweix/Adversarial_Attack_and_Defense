@@ -52,4 +52,29 @@ $$
 ### FGSM
 [FGSM_note](./FGSM_note.md)
 
-## 3.2
+## 3.2 Score-Based Attack
+攻击时有时无法获得梯度信息，于是从分类器的结果进行攻击。
+|<h5>论文|成果|
+|:-----|-|
+|Chen, P.-Y., Zhang, H., Sharma, Y., Yi, J. and Hsieh, C.-J. (2017) Zoo: Zeroth order optimization based black-box attacks to deep neural networks without training substitute models. In
+Proceedings of the 10th ACM Workshop on Artificial Intelligence and Security, 15–26.|利用分数信息估计梯度,并制造对抗样本|
+|Ilyas, A., Engstrom, L., Athalye, A. and Lin, J. (2018) Black-box adversarial attacks with limited queries and information. In International Conference on Machine Learning, 2137–2146.|利用自然进化策略估计梯度|
+
+基于分数攻击可分为以下两类
+### Gradient-approximation based methods 
+梯度近似方式
+ZOO（Zeroth Order Optimization Based Attack）方式是一种梯度近似的方式
+$$
+    \frac{\partial f(\mathbf{x})}{\partial x_{(i)}}\approx\frac{f(\mathbf{x}-h \mathbf{e}_i)-f(\mathbf{x}-h \mathbf{e} _i)}{2h}
+$$
+其中，h为一个小常数，$\mathbf{e} _i$为一个标准基向量,在输入维度很大的情况下，引入了几种技术来扩大估计。
+|论文|成果|
+|--|--|
+|Chen, P.-Y., Zhang, H., Sharma, Y., Yi, J. and Hsieh, C.-J. (2017) Zoo: Zeroth order optimization based black-box attacks to deep neural networks without training substitute models. In Proceedings of the 10th ACM Workshop on Artificial Intelligence and Security, 15–26.|ZOO|
+|Ilyas, A., Engstrom, L., Athalye, A. and Lin, J. (2018) Black-box adversarial attacks with limited queries and information. In International Conference on Machine Learning, 2137–2146.|NES|
+|Ilyas, A., Engstrom, L. and Madry, A. (2019) Prior convictions: Black-box adversarial attacks with bandits and priors. In International Conference on Learning Representations.|Bandits Attack|
+NES估计出损失梯度后，根据估计梯度生成对抗性示例
+$$
+\frac{1}{\sigma n}\sum_{i=1}^{n}\mathbf{\delta} _i f(\mathbf{x}+\sigma \mathbf{\delta}_i)
+$$
+其中n为估计梯度的搜索次数，$\delta _i$为$\mathcal{N}(0,I)$采样的随机方向，$\sigma$是搜索步骤的标准偏差。
